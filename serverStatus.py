@@ -11,7 +11,7 @@ class serverStatus(Thread) :
 		ss = '{'
 		for t in threading.enumerate() :
 		    	r_name = t.getName()
-		    	if r_name[0 : 2] == 'r_' :
+		    	if r_name[0 : 2] == 'r_' :                                   # if this is a request thread
 		    		remaining_time = float(t.timeout) - ( time.time() - float(r_name[2 : ]) )
 		    		if remaining_time > 0 :
 		    			ss += '"' + t.connId + '" : "' + `int(round(remaining_time))` + '", '
