@@ -7,7 +7,7 @@ Python 2.7 or higher
 
 Usage
 -----
-python main.py port_number
+python main.py port_number  
 example - python main.py 1234
 
 Contact
