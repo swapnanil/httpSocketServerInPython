@@ -3,7 +3,7 @@ Python HTTP server implemented using sockets
 
 Requirements
 ------------
-Python 2.7 or higher
+Python 2.X, X >= 7
 
 Usage
 -----

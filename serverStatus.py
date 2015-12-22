@@ -21,14 +21,6 @@ class serverStatus(Thread) :
 		else :
 			ss = 'No active requests!'
 		self.csock.sendall("""HTTP/1.0 200 OK
-			Content-Type: text/html
-
-			<html>
-			<head>
-			<title>Server Status</title>
-			</head>
-			<body>"""
-			+ ss +
-			"""</body>
-			</html>""")
+			Content-Type: text/json\r\n
+			""" + ss)
 		self.csock.close()

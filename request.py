@@ -18,30 +18,12 @@ class request(Thread) :
 		while float(self.timeout) - (time.time() - start_time) > 0 :            # check for time remaining
 			if self.killed :												    # if killed in kill.py
 				self.csock.sendall("""HTTP/1.0 200 OK
-				Content-Type: text/html
-
-				<html>
-				<head>
-				<title>Killed</title>
-				</head>
-				<body>
-				{status : "killed"}
-				</body>
-				</html>
-				""")
+				Content-Type: text/json\r\n
+				{status : "killed"}""")
 				self.csock.close()
 				return
 
 		self.csock.sendall("""HTTP/1.0 200 OK
-		Content-Type: text/html
-
-		<html>
-		<head>
-		<title>Success</title>
-		</head>
-		<body>
-		{status : "ok"}
-		</body>
-		</html>
-		""")
+		Content-Type: text/json\r\n
+		{status : "ok"}""")
 		self.csock.close()

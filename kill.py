@@ -13,23 +13,15 @@ class kill(Thread) :
 		for t in threading.enumerate() :
 		    	r_name = t.getName()
 		    	if r_name[0 : 2] == 'r_' :                                  # if this is a request thread
-		    		if t.connId == self.connId :
+		    		if int(t.connId) == int(self.connId) :
 		    			found = True
-		    			t.killed = True                                     #set t's killed attribute as true
+		    			t.killed = True                                     # set t's killed attribute as true
 		    			break
 		if found :
 			ss = '{"status":"ok"}'
 		else :
-			ss = '{"status":"invalid connection Id : ' + self.connId + '"}'
+			ss = '{"status":"invalid connection Id : ' + `self.connId` + '"}'
 		self.csock.sendall("""HTTP/1.0 200 OK
-			Content-Type: text/html
-
-			<html>
-			<head>
-			<title>Killer</title>
-			</head>
-			<body>"""
-			+ ss +
-			"""</body>
-			</html>""")
+			Content-Type: text/json\r\n
+			""" + ss)
 		self.csock.close()
