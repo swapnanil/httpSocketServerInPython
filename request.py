@@ -1,5 +1,6 @@
 from threading import Thread
 import socket
+import time
 
 class request(Thread) :
 	def __init__ (self, csock, connId, timeout) :
@@ -10,6 +11,7 @@ class request(Thread) :
 
 	def run(self) :
 		print "(request) CONNID: " + self.connId + "\n"
+		time.sleep(int(self.timeout))
 		self.csock.sendall("""HTTP/1.0 200 OK
 		Content-Type: text/html
 
@@ -17,10 +19,9 @@ class request(Thread) :
 		<head>
 		<title>Success</title>
 		</head>
-		<body>"""
-		"""connId: """ + self.connId +
-		"""<br>timeout: """ + self.timeout +
-		"""</body>
+		<body>
+		{success : "ok"}
+		</body>
 		</html>
 		""")
 		self.csock.close()
