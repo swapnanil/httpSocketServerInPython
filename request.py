@@ -1,6 +1,7 @@
 from threading import Thread
 import socket
 import time
+import threading
 
 class request(Thread) :
 	def __init__ (self, csock, connId, timeout) :
@@ -8,10 +9,29 @@ class request(Thread) :
 		self.csock = csock
 		self.connId = connId
 		self.timeout = timeout
+		self.killed = False
 
 	def run(self) :
 		print "(request) CONNID: " + self.connId + "\n"
-		time.sleep(int(self.timeout))
+
+		start_time = float(threading.current_thread().getName()[2: ])
+		while float(self.timeout) - (time.time() - start_time) > 0 :
+			if self.killed :
+				self.csock.sendall("""HTTP/1.0 200 OK
+				Content-Type: text/html
+
+				<html>
+				<head>
+				<title>Killed</title>
+				</head>
+				<body>
+				{status : "killed"}
+				</body>
+				</html>
+				""")
+				self.csock.close()
+				return
+
 		self.csock.sendall("""HTTP/1.0 200 OK
 		Content-Type: text/html
 
@@ -20,7 +40,7 @@ class request(Thread) :
 		<title>Success</title>
 		</head>
 		<body>
-		{success : "ok"}
+		{status : "ok"}
 		</body>
 		</html>
 		""")
