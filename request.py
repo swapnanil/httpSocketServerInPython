@@ -1,8 +1,7 @@
 import socket
 
-def request(caddr, connId, timeout) :
-	csock
-	print "CONNID: " + connId + "\n"
+def request(csock, connId, timeout) :
+	print "(request) CONNID: " + connId + "\n"
 	csock.sendall("""HTTP/1.0 200 OK
 	Content-Type: text/html
 	<html>

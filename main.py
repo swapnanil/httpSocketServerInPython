@@ -22,12 +22,12 @@ while True:
     if match:
         connId = match.group(1)
         timeout = match.group(2)
-        r_thread = Thread(target = request.request, args = (caddr, connId, timeout))
+        r_thread = Thread(target = request.request, args = (csock, connId, timeout))
         r_thread.start()
     else:
         # If there was no recognised command then return a 404 (page not found)
         # print "Returning 404"
-        csock.sendall("""HTTP/1.0 404 Not Found
+        csock.sendall("""HTTP/1.0 200 OK
                     Content-Type: text/html
                     <html>
                     <head>
