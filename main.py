@@ -6,6 +6,7 @@ from time import sleep
 import request
 import serverStatus
 import kill
+
 # Standard socket stuff:
 host = '' # do we need socket.gethostname() ?
 port = int(sys.argv[1])
@@ -16,13 +17,14 @@ sock.listen(1) # don't queue up any requests
 # Loop forever, listening for requests:
 while True:
     csock, caddr = sock.accept()
-    # print "Connection from: " + `caddr`
+    print "Connection from: " + `caddr`
     req = csock.recv(1024) # get the request, 1kB max
     match = re.match('GET /api/request\?connId=(\d+)&timeout=(\d+)\sHTTP/1', req)
     if match:
         connId = match.group(1)
         timeout = match.group(2)
-        r_thread = Thread(target = request.request, args = (csock, connId, timeout))
+        # r_thread = Thread(target = request.request, args = (csock, connId, timeout))
+        r_thread = request.request(csock, connId, timeout)
         r_thread.start()
     else:
         # If there was no recognised command then return a 404 (page not found)
@@ -37,4 +39,4 @@ while True:
                     The request was not recognised
                     </body>
                     </html>""")
-        csock.close()
+    csock.close()
